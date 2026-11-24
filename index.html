@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>루브리케이터 실제 단면 작동 시뮬레이션</title>
+<style>
+:root{--bg:#dce9e8;--paper:#f8fbf5;--ink:#244b58;--blue:#4f8796;--line:#9ab9bc;--deep:#2f6170;--oil:#e5ae52;--oil2:#c98332;--good:#47836d;--bad:#ae645b;--muted:#6a868d}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 25% 10%,#f7fbef 0,#dbe7e6 42%,#bed0d2 100%);color:var(--ink);font-family:"Segoe UI",system-ui,sans-serif}.page{max-width:1220px;margin:auto;padding:25px 20px 38px}.top{display:flex;justify-content:space-between;gap:18px;align-items:end;margin-bottom:16px}.eyebrow{font-size:11px;letter-spacing:.13em;color:var(--deep);font-weight:800}.top h1{font-size:clamp(25px,4vw,44px);margin:5px 0 5px;letter-spacing:-.06em}.top p{margin:0;color:var(--muted);font-size:13px}.tag{padding:9px 13px;border-radius:20px;background:#edf7ee;color:var(--good);font-size:11px;font-weight:800;white-space:nowrap;box-shadow:0 5px 18px #99b7b744}.grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(300px,.8fr);gap:16px}.panel{background:rgba(248,251,245,.84);border:1px solid #a8c1c1;border-radius:26px;box-shadow:0 14px 35px #64868b24;backdrop-filter:blur(5px)}.drawing{padding:13px}.panel-title{display:flex;justify-content:space-between;align-items:center;padding:2px 5px 10px;border-bottom:1px solid var(--line);font-weight:800;font-size:14px}.panel-title span{font-size:10px;color:var(--muted);font-weight:500}svg{width:100%;display:block;margin-top:10px;border-radius:20px;background:#eaf4ef;border:1px solid #b6cdca}.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:10px;color:var(--muted);padding:9px 3px 1px}.legend span{display:flex;align-items:center;gap:5px}.dotkey{width:10px;height:10px;border-radius:50%;display:inline-block;background:var(--blue)}.dotkey.oil{background:var(--oil)}.dotkey.mist{background:#e58b57}.controls{padding:18px}.controls h2,.auto h2,.detail h2{font-size:14px;margin:0 0 11px}.control{padding:11px 0;border-top:1px dashed var(--line)}.row{display:flex;justify-content:space-between;align-items:baseline;gap:12px}.label{font-size:12px;font-weight:800}.value{font:800 21px ui-monospace,monospace;color:var(--deep)}small{font-size:11px;font-weight:500}.hint{font-size:11px;color:var(--muted);margin:3px 0 8px}input[type=range]{width:100%;accent-color:var(--deep)}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:13px}.metric{padding:9px 4px;text-align:center;border:1px solid #aac4c3;border-radius:15px;background:#eef6f0}.metric span{font-size:10px;color:var(--muted)}.metric b{display:block;font:800 18px ui-monospace,monospace;color:var(--deep)}.status{margin-top:11px;padding:10px;border-radius:14px;background:#e2f1e6;border:1px solid #8cb9a2;color:var(--good);font-size:12px;font-weight:800}.status.off{background:#f7e7df;border-color:#d29a8e;color:var(--bad)}.auto{grid-column:1/-1;padding:16px 18px}.auto-head{display:flex;justify-content:space-between;align-items:center;gap:10px}.auto-note{color:var(--muted);font-size:11px;margin:0 0 12px}.stepbar{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.step{border:1px solid #a9c3c2;border-radius:15px;padding:11px 9px;text-align:left;background:#f9fcf7;color:var(--ink);cursor:pointer;font:inherit;min-height:78px}.step:hover,.step.active{background:#dff0ea;border-color:var(--deep);box-shadow:0 4px 12px #6d9a9842}.step .num{font:800 10px ui-monospace,monospace;color:var(--deep)}.step strong{display:block;font-size:12px;margin:4px 0 2px}.step small{font-size:10px;color:var(--muted);line-height:1.35}.playrow{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}.toggle{font-size:11px;color:var(--muted);display:flex;gap:6px;align-items:center}.toggle input{accent-color:var(--good)}.next{border:1px solid var(--deep);border-radius:20px;background:#edf7f0;color:var(--deep);padding:8px 13px;font-weight:800;font-size:11px;cursor:pointer}.next:hover{background:#d8ece3}.bar{flex:1;min-width:120px;height:6px;background:#d6e6e2;border-radius:10px;overflow:hidden}.bar i{height:100%;display:block;background:var(--deep);width:25%;transition:width .25s}.detail{grid-column:1/-1;display:grid;grid-template-columns:1.2fr 1fr;gap:16px}.detail article{padding:16px}.detail p{font-size:12px;line-height:1.65;color:var(--muted);margin:0}.eq{margin-top:10px;background:#e9f3ed;border-left:3px solid var(--deep);padding:9px 11px;font:12px ui-monospace,monospace;color:var(--ink)}.fine{font-size:10px!important}.bubble{filter:url(#soft)}.airB{fill:#72b3c0;opacity:.6}.oilB{fill:var(--oil);opacity:.8}.mistB{fill:#e69461;opacity:.72}.shell{fill:#d8e7e4;stroke:var(--deep);stroke-width:2}.section{fill:url(#hatch);stroke:var(--deep);stroke-width:2}.wall{fill:#f5fbf5;stroke:#5b8e98;stroke-width:1.5}.line{stroke:var(--deep);fill:none;stroke-linecap:round}.oil{fill:#f2c65f;opacity:.9}.label{fill:var(--ink);font-size:12px;font-weight:700}.sub{fill:var(--muted);font-size:10px}.lead{stroke:var(--blue);fill:none;stroke-width:1.2}.arrow{fill:var(--deep)}@media(max-width:860px){.grid,.detail{grid-template-columns:1fr}.stepbar{grid-template-columns:repeat(2,1fr)}}@media(max-width:480px){.page{padding:18px 11px}.top{align-items:start;flex-direction:column}.tag{align-self:flex-start}.controls,.auto,.detail article{padding:14px}.metrics{gap:4px}.metric{padding:7px 2px}}
+</style>
+<style>
+/* PowerPoint/SlideWingl fallback: avoid relying on backdrop-filter in embedded WebViews. */
+.panel{background:rgba(248,251,245,.96)!important}
+</style>
+<style>.physics{margin-top:12px;padding:11px 12px;border:1px solid #a9c3c2;border-radius:18px;background:#eef7f1}.physics h3{font-size:12px;margin:0 0 8px}.formula{font:12px ui-monospace,monospace;padding:7px 8px;margin:5px 0;background:#e4f1eb;border-left:3px solid var(--deep);border-radius:5px}.formula b{color:var(--deep)}.formula em{font-style:normal;color:var(--oil2);font-weight:800}.playbtn{border:1px solid var(--deep);border-radius:20px;background:#eaf6ef;color:var(--deep);padding:7px 12px;font-size:11px;font-weight:800;cursor:pointer}.playbtn:hover{background:#d7ece1}.physics-note{font-size:10px;color:var(--muted);line-height:1.4;margin:7px 0 0}</style>
+</head>
+<body>
+<main class="page">
+<header class="top">
+<div>
+<div class="eyebrow">PNEUMATIC LUBRICATOR / CUTAWAY MODEL</div>
+<h1>루브리케이터 실제 단면 작동도</h1>
+<p>첨부 단면을 바탕으로 한 개념 설계도 · IN → 체크 구조 → 니들/오일 이동관 → OUT</p>
+</div>
+<div class="tag">● 실제 구조 기반 · 정성 모델</div>
+</header>
+<section class="grid">
+<div class="panel drawing">
+<div class="panel-title">단면 설계도 <span>첨부 이미지 형상 참고 · NOT FOR MANUFACTURING</span>
+</div>
+<svg id="scene" viewBox="0 0 820 520" role="img" aria-labelledby="title desc">
+<title id="title">실제형 루브리케이터 단면 애니메이션</title>
+<desc id="desc">왼쪽 입구에서 오른쪽 출구로 공기가 흐르고, 니들·체크볼·오일 이동관·필터 엘리먼트를 거쳐 오일 미스트가 만들어지는 장면</desc>
+<defs>
+<pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+<path d="M32 0H0V32" fill="none" stroke="#b5d0ce" stroke-width=".6"/>
+</pattern>
+<pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">
+<line y2="7" stroke="#8eb6b6" stroke-width="1"/>
+</pattern>
+<filter id="soft">
+<feGaussianBlur stdDeviation=".45"/>
+</filter>
+<filter id="glow">
+<feGaussianBlur stdDeviation="2.6" result="b"/>
+<feMerge>
+<feMergeNode in="b"/>
+<feMergeNode in="SourceGraphic"/>
+</feMerge>
+</filter>
+</defs>
+<rect width="820" height="520" fill="url(#grid)" opacity=".5"/>
+<path class="shell" d="M150 103Q150 82 171 82H336Q354 82 354 103V179H545V103Q545 82 563 82H650Q671 82 671 103V160H724Q749 160 749 185V235H674V465Q674 487 652 487H169Q147 487 147 465V235H73V185Q73 160 98 160H150Z"/>
+<path class="wall" d="M177 111V177Q177 198 199 198H621Q643 198 643 177V111H654V179Q654 209 625 209H195Q166 209 166 179V111Z"/>
+<path class="wall" d="M177 235V452Q177 472 198 472H623Q644 472 644 452V235Z"/>
+<path class="section" d="M166 235H655V452Q655 487 620 487H200Q166 487 166 452Z"/>
+<path class="oil" d="M177 353Q230 338 286 352T397 352T508 352T644 349V454Q644 472 621 472H199Q177 472 177 452Z"/>
+<path class="wall" d="M76 185H303L326 211H493L517 185H748V235H517L493 210H326L303 235H76Z"/>
+<path d="M76 210H303L327 236H492L517 210H748" class="line" stroke-width="5" opacity=".45"/>
+<path id="airLine" d="M88 210H300L326 236H493L519 210H734" class="line" stroke-width="4"/>
+<path d="M409 116V250" stroke="#557e88" stroke-width="9"/>
+<path d="M409 245L401 274H417Z" fill="#416b73"/>
+<circle id="checkBall" cx="409" cy="225" r="9" fill="#f5fbf5" stroke="#496f78" stroke-width="2"/>
+<path d="M398 278H420M401 290H417" stroke="#496f78" stroke-width="2"/>
+<path id="oilTube" d="M409 291V432" stroke="var(--oil2)" stroke-width="7" fill="none"/>
+<path d="M399 432H419" stroke="#4b7078" stroke-width="3"/>
+<g id="filter">
+<path d="M390 430H428V456H390Z" fill="#5c878b"/>
+<path d="M390 436H428M390 443H428M390 450H428" stroke="#d9eeeb" stroke-width="2"/>
+</g>
+<path d="M352 106H465Q478 106 478 119V154H339V119Q339 106 352 106Z" class="section"/>
+<path d="M354 128H463" stroke="#a5c2bf" stroke-width="2"/>
+<text x="365" y="122" class="sub">급유 플러그</text>
+<g id="airBubbles">
+</g>
+<g id="oilBubbles">
+</g>
+<g id="mistBubbles">
+</g>
+<g>
+<text x="86" y="150" class="label">IN</text>
+<path d="M103 155h47" class="lead"/>
+<path d="m150 155-9-5v10z" class="arrow"/>
+<text x="700" y="150" class="label">OUT</text>
+<path d="M674 155h-45" class="lead"/>
+<path d="m629 155 9-5v10z" class="arrow"/>
+<text x="42" y="300" class="label">케이스 가드</text>
+<path d="M125 296l42-28" class="lead"/>
+<text x="682" y="277" class="label">케이스</text>
+<path d="M665 274l-21-22" class="lead"/>
+<text x="480" y="310" class="label">오일 이동관</text>
+<path d="M475 305l-56 55" class="lead"/>
+<text x="460" y="455" class="label">필터 엘리먼트</text>
+<path d="M456 447l-28-8" class="lead"/>
+<text x="292" y="275" class="label">체크볼</text>
+<path d="M328 271l72-42" class="lead"/>
+<text x="460" y="100" class="label">니들/분사구</text>
+<path d="M456 105l-40 38" class="lead"/>
+<text x="210" y="370" class="label">기름 저장조</text>
+<text x="212" y="386" class="sub">oil reservoir</text>
+</g>
+<g id="pressureNote">
+<rect x="30" y="405" width="122" height="60" rx="15" fill="#eef7f1" stroke="#94b5b4"/>
+<text x="43" y="426" class="sub">P₂ 낮음</text>
+<text x="43" y="444" class="label">흡입 압력차</text>
+<text x="43" y="458" class="sub">needle opening</text>
+</g>
+</svg>
+<div class="legend">
+<span>
+<i class="dotkey">
+</i>공기 흐름</span>
+<span>
+<i class="dotkey oil">
+</i>윤활유 이동</span>
+<span>
+<i class="dotkey mist">
+</i>오일 미스트</span>
+</div>
+</div>
+<aside class="panel controls">
+<h2>실제 조건에 가까운 입력</h2>
+<div class="control">
+<div class="row">
+<span class="label">입구 압력 P₁</span>
+<span class="value">
+<span id="pVal">6.0</span>
+<small> bar</small>
+</span>
+</div>
+<div class="hint">압력차가 니들부 흡입을 만드는 원인입니다.</div>
+<input id="p" type="range" min="0" max="10" step="0.1" value="6" aria-label="입구 압력">
+</div>
+<div class="control">
+<div class="row">
+<span class="label">공기 유량 Q</span>
+<span class="value">
+<span id="qVal">320</span>
+<small> L/min</small>
+</span>
+</div>
+<div class="hint">Q = 0이면 공기·오일·미스트가 모두 정지합니다.</div>
+<input id="q" type="range" min="0" max="600" step="10" value="320" aria-label="공기 유량">
+</div>
+<div class="control">
+<div class="row">
+<span class="label">니들 개방 / 오일 미터링</span>
+<span class="value">
+<span id="oVal">35</span>
+<small> %</small>
+</span>
+</div>
+<div class="hint">니들이 닫히면 압력차가 있어도 윤활유가 나오지 않습니다.</div>
+<input id="o" type="range" min="0" max="100" step="1" value="35" aria-label="오일 미터링">
+</div>
+<div class="metrics" aria-live="polite">
+<div class="metric">
+<span>목 속도</span>
+<b id="vel">34</b>
+<span>m/s</span>
+</div>
+<div class="metric">
+<span>압력 저하</span>
+<b id="drop">42</b>
+<span>%</span>
+</div>
+<div class="metric">
+<span>오일 피드</span>
+<b id="feed">18</b>
+<span>방울/s</span>
+</div>
+</div>
+<div id="status" class="status">윤활유 흐름 정상 · 미스트 생성</div>
+<div class="physics" aria-live="polite">
+<h3>실시간 물리식</h3>
+<div class="formula">연속식: A₁v₁ = A₂v₂ → <b>v₂ = <span id="vEq">0</span> m/s</b>
+</div>
+<div class="formula">베르누이: ΔP ≈ ½ρ(v₂²−v₁²) → <b>ΔP = <span id="pEq">0</span> kPa</b>
+</div>
+<div class="formula">오일 이동: Qₒ ∝ (ΔP × 니들 개방) → <b>Qₒ = <em>
+<span id="oilEq">0</span> 방울/s</em>
+</b>
+</div>
+<p class="physics-note">유량을 올리면 v₂가 증가하고, 그 결과 정압이 더 낮아져 오일 흡입 가능성이 커집니다. 실제 장치에서는 점도·온도·치수에 따라 달라집니다.</p>
+<button id="play" class="playbtn" type="button">일시정지</button>
+</div>
+</aside>
+<section class="panel auto">
+<div class="auto-head">
+<h2>단계별 자동 운전 패널</h2>
+<span id="stepReadout" class="hint">STEP 03 · 정상 윤활</span>
+</div>
+<p class="auto-note">단계를 클릭하면 권장 조건이 자동 적용됩니다. 자동 재생을 켜면 정지 → 감압 → 흡입 → 하류 전달 순으로 반복합니다.</p>
+<div class="stepbar">
+<button class="step" data-s="0">
+<span class="num">STEP 01</span>
+<strong>정지 / 대기</strong>
+<small>Q=0 · 오일 없음</small>
+</button>
+<button class="step" data-s="1">
+<span class="num">STEP 02</span>
+<strong>압력 형성</strong>
+<small>공기만 통과</small>
+</button>
+<button class="step active" data-s="2">
+<span class="num">STEP 03</span>
+<strong>흡입·분무</strong>
+<small>오일이 상승</small>
+</button>
+<button class="step" data-s="3">
+<span class="num">STEP 04</span>
+<strong>하류 전달</strong>
+<small>미스트 공급</small>
+</button>
+</div>
+<div class="playrow">
+<label class="toggle">
+<input id="auto" type="checkbox" checked> 자동 단계 재생</label>
+<button id="next" class="next" type="button">다음 단계 →</button>
+<div class="bar">
+<i id="progress">
+</i>
+</div>
+<span id="timer" class="hint">2.5 s</span>
+</div>
+</section>
+</section>
+</main>
+<script>
+(()=>{const $=id=>document.getElementById(id),ns='http://www.w3.org/2000/svg',p=$('p'),q=$('q'),o=$('o'),auto=$('auto'),state={t:0,step:2,last:0};const ab=$('airBubbles'),ob=$('oilBubbles'),mb=$('mistBubbles');const make=(g,c)=>{const e=document.createElementNS(ns,'circle');e.setAttribute('class',c+' bubble');g.appendChild(e);return e};const air=Array.from({length:30},()=>make(ab,'airB')),oil=Array.from({length:10},()=>make(ob,'oilB')),mist=Array.from({length:20},()=>make(mb,'mistB'));const presets=[{p:0,q:0,o:0,label:'STEP 01 · 정지 / 대기'},{p:3.2,q:120,o:4,label:'STEP 02 · 압력 형성'},{p:6,q:320,o:35,label:'STEP 03 · 정상 윤활'},{p:6.8,q:480,o:58,label:'STEP 04 · 하류 전달'}];const texts=['공급이 없으므로 공기 흐름과 오일 이동이 모두 멈춘 대기 상태입니다.','공기만 통과하기 시작합니다. 압력차가 형성되지만 니들 개방량이 작아 오일은 아직 흐르지 않습니다.','압력차와 니들 개방량이 모두 충분합니다. 오일이 필터 엘리먼트 위 저장조에서 이동관을 따라 상승하고 분무됩니다.','공기 유량이 커져 미스트가 하류로 전달됩니다. 실제 장치에서는 점도·온도·니들 조정에 따라 공급량이 달라집니다.'];
+state.play=true;
+function applyStep(i){state.step=i;let x=presets[i];p.value=x.p;q.value=x.q;o.value=x.o;document.querySelectorAll('.step').forEach((b,n)=>b.classList.toggle('active',n===i));$('stepReadout').textContent=x.label}
+document.querySelectorAll('.step').forEach(b=>b.addEventListener('click',()=>{auto.checked=false;applyStep(+b.dataset.s)}));$('next').addEventListener('click',()=>applyStep((state.step+1)%4));$('play').addEventListener('click',()=>{state.play=state.play!==true;$('play').textContent=state.play?'일시정지':'재생'});[p,q,o].forEach(e=>e.addEventListener('input',()=>{auto.checked=false}));
+function render(now){state.t+=state.play?1:0;let P=+p.value,Q=+q.value,O=+o.value,drop=Math.min(82,Math.round(P*4.2+Q*.035)),eligible=Q>40&&P>=2.2&&O>=8&&drop>=12,feed=eligible?Math.round(O*.42*(.55+P/10)):0;$('pVal').textContent=P.toFixed(1);$('qVal').textContent=Q;$('oVal').textContent=O;let vel=Q===0?0:Math.round(10+Q*.075+P*1.1);$('vel').textContent=vel;$('drop').textContent=drop;$('feed').textContent=feed;$('vEq').textContent=vel;$('pEq').textContent=(drop*1.01).toFixed(1);$('oilEq').textContent=feed;let st=$('status');st.className='status'+(eligible?'':' off');st.textContent=eligible?'윤활유 흐름 정상 · 미스트 생성':' '+(Q===0?'유량 0 · 전체 흐름 정지':P<2.2?'입구 압력 부족 · 오일 흡입 불가':O<8?'니들 닫힘 · 오일 공급 차단':'압력차 부족 · 윤활유 미공급');let scale=(Q/320)*(P/6);air.forEach((d,i)=>{let x=82+((state.t*scale*.9+i*29)%650),y=x<300?210:x<330?210+(x-300)*.9:x<493?237:x<523?237-(x-493)*.9:210;d.setAttribute('cx',x);d.setAttribute('cy',y+(i%3-1)*5);d.setAttribute('r',i%6===0?4:2.5);d.style.opacity=Q?'.8':'.12'});oil.forEach((d,i)=>{let ph=eligible?(state.t*(.5+O/140)+i*15)%135:0;d.setAttribute('cx',409+(i-5)*1.7+(ph>80?(ph-80)*.3:0));d.setAttribute('cy',420-ph*1.06);d.setAttribute('r',eligible?3+(i%3):0)});mist.forEach((d,i)=>{let x=490+((state.t*(.7+Q/600)+i*31)%235),y=210+Math.sin((state.t+i*13)/18)*18+(i%5)*9;d.setAttribute('cx',x);d.setAttribute('cy',y);d.setAttribute('r',eligible?2+(i%4)*.7:0)});if(auto.checked&&now-state.last>2500){state.last=now;applyStep((state.step+1)%4)}$('progress').style.width=((state.step+1)*25)+'%';requestAnimationFrame(render)}applyStep(2);requestAnimationFrame(render)})();
+</script>
+</body>
+</html>
+
+
